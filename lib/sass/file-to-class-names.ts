@@ -1,5 +1,10 @@
 import fs from "fs";
-import { camelCase, paramCase, snakeCase } from "change-case";
+import {
+  camelCase,
+  paramCase,
+  snakeCase,
+  camelCaseTransformMerge,
+} from "change-case";
 
 import { sourceToClassNames } from "./source-to-class-names";
 import { Implementations, getImplementation } from "../implementations";
@@ -13,6 +18,8 @@ interface Transformer {
 
 const transformersMap = {
   camel: (className: ClassName) => camelCase(className),
+  camelOnly: (className: ClassName) =>
+    camelCase(className, { transform: camelCaseTransformMerge }),
   dashes: (className: ClassName) =>
     /-/.test(className) ? camelCase(className) : className,
   kebab: (className: ClassName) => transformersMap.param(className),
